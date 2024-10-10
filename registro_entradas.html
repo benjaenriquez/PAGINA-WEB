@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMAWAKA Conciertos - Registro y Compra de Entradas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form input, form select, form button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .entrada {
+            margin-bottom: 20px;
+        }
+        .entrada h3 {
+            margin: 0 0 10px;
+        }
+        .toggle-link {
+            cursor: pointer;
+            color: #007bff;
+            text-align: center;
+            margin-top: 10px;
+        }
+        #compra-exitosa {
+            display: none;
+            text-align: center;
+            font-size: 18px;
+            color: green;
+            margin-top: 20px;
+        }
+        #metodo-pago input, #metodo-pago select {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UMAWAKA Conciertos</h1>
+
+        <!-- Formulario de inicio de sesión -->
+        <form id="login-form" style="display:block;">
+            <h2>Iniciar Sesión</h2>
+            <input type="email" id="login-email" placeholder="Correo" required>
+            <input type="password" id="login-password" placeholder="Contraseña" required>
+            <button type="submit" onclick="iniciarSesion(event)">Entrar</button>
+            <p class="toggle-link" onclick="toggleForm('registro')">¿No tienes una cuenta? Regístrate</p>
+        </form>
+
+        <!-- Formulario de registro -->
+        <form id="register-form" style="display:none;">
+            <h2>Registrarse</h2>
+            <input type="text" id="register-nombre" placeholder="Nombre Completo" required>
+            <input type="email" id="register-email" placeholder="Correo" required>
+            <input type="password" id="register-password" placeholder="Contraseña" required>
+            <input type="tel" id="register-telefono" placeholder="Teléfono" required>
+            <button type="submit" onclick="registrarse(event)">Registrarse</button>
+            <p class="toggle-link" onclick="toggleForm('login')">¿Ya tienes una cuenta? Inicia sesión</p>
+        </form>
+
+        <!-- Sección de compra de entradas (oculta por defecto) -->
+        <div id="compra-entradas" style="display:none;">
+            <h2>Compra de Entradas para el Concierto de Chiku</h2>
+
+            <div class="entrada">
+                <h3>BELGRANO alta</h3>
+                <p>Precio: $20.000</p>
+                <label for="cantidad-belgrano-alta">Cantidad:</label>
+                <input type="number" id="cantidad-belgrano-alta" name="cantidad-belgrano-alta" min="0" max="10" value="0">
+            </div>
+
+
+            <div class="entrada">
+                <h3>BELGRANO baja</h3>
+                <p>Precio: $40.000</p>
+                <label for="cantidad-belgrano-baja">Cantidad:</label>
+                <input type="number" id="cantidad-belgrano-baja" name="cantidad-belgrano-baja" min="0" max="10" value="0">
+            </div>
+
+            <div class="entrada">
+                <h3>SAN MARTIN alta</h3>
+                <p>Precio: $20.000</p>
+                <label for="cantidad-san-martin-alta">Cantidad:</label>
+                <input type="number" id="cantidad-san-martin-alta" name="cantidad-san-martin-alta" min="0" max="10" value="0">
+            </div>
+
+            <div class="entrada">
+                <h3>CAMPO 2</h3>
+                <p>Precio: $25.000</p>
+                <label for="cantidad-campo-2">Cantidad:</label>
+                <input type="number" id="cantidad-campo-2" name="cantidad-campo-2" min="0" max="10" value="0">
+            </div>
+
+            <div class="entrada">
+                <h3>CAMPO 1</h3>
+                <p>Precio: $30.000</p>
+                <label for="cantidad-campo-1">Cantidad:</label>
+                <input type="number" id="cantidad-campo-1" name="cantidad-campo-1" min="0" max="10" value="0">
+            </div>
+
+            <div class="entrada">
+                <h3>SÍVORI alta</h3>
+                <p>Precio: $35.000</p>
+                <label for="cantidad-sivori-alta">Cantidad:</label>
+                <input type="number" id="cantidad-sivori-alta" name="cantidad-sivori-alta" min="0" max="10" value="0">
+            </div>
+
+            <div class="entrada">
+                <h3>SÍVORI baja</h3>
+                <p>Precio: $40.000</p>
+                <label for="cantidad-sivori-baja">Cantidad:</label>
+                <input type="number" id="cantidad-sivori-baja" name="cantidad-sivori-baja" min="0" max="10" value="0">
+            </div>
+
+
+            <!-- Método de pago -->
+            <div id="metodo-pago">
+                <h2>Detalles de la Tarjeta</h2>
+
+                <label for="tipo-tarjeta">Tipo de tarjeta</label>
+                <select id="tipo-tarjeta" required>
+                    <option value="Visa">Visa</option>
+                    <option value="MasterCard">MasterCard</option>
+                </select>
+
+                <label for="numero-tarjeta">Número de tarjeta</label>
+                <input type="text" id="numero-tarjeta" placeholder="Número de tarjeta" required>
+
+                <label for="nombre-titular">Nombre del titular</label>
+                <input type="text" id="nombre-titular" placeholder="Nombre del titular" required>
+
+                <label for="codigo-seguridad">Código de seguridad (CVV)</label>
+                <input type="text" id="codigo-seguridad" placeholder="CVV" required>
+
+                <label for="fecha-vencimiento">Fecha de vencimiento</label>
+                <input type="month" id="fecha-vencimiento" required>
+
+                <label for="dni-titular">DNI del titular</label>
+                <input type="text" id="dni-titular" placeholder="DNI del titular" required>
+            </div>
+
+            <!-- Botón para realizar la compra -->
+            <button onclick="finalizarCompra()">Finalizar Compra</button>
+        </div>
+
+        <!-- Mensaje de compra exitosa -->
+        <div id="compra-exitosa">
+            <h2>¡Compra exitosa!</h2>
+            <p id="detalle-compra"></p>
+        </div>
+    </div>
+
+    <script>
+        var isAuthenticated = false;
+
+        // Función para alternar formularios de inicio y registro
+        function toggleForm(formType) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+
+            if (formType === 'registro') {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            } else {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            }
+        }
+
+        // Función para iniciar sesión
+        function iniciarSesion(event) {
+            event.preventDefault();
+            var email = document.getElementById('login-email').value;
+            var password = document.getElementById('login-password').value;
+
+            // Simulación de autenticación
+            if (email && password) {
+                isAuthenticated = true;
+                alert("Inicio de sesión exitoso");
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('compra-entradas').style.display = 'block';
+            } else {
+                alert("Credenciales incorrectas");
+            }
+        }
+
+        // Función para registrarse
+        function registrarse(event) {
+            event.preventDefault();
+            var nombre = document.getElementById('register-nombre').value;
+            var email = document.getElementById('register-email').value;
+            var password = document.getElementById('register-password').value;
+            var telefono = document.getElementById('register-telefono').value;
+
+            // Simulación de registro
+            if (nombre && email && password && telefono) {
+                alert("Registro exitoso");
+                toggleForm('login');
+            } else {
+                alert("Por favor, completa todos los campos");
+            }
+        }
+
+        // Función para finalizar la compra
+        function finalizarCompra() {
+            if (!isAuthenticated) {
+                alert("Debes iniciar sesión primero");
+                return;
+            }
+
+            var tipoTarjeta = document.getElementById('tipo-tarjeta').value;
+            var numeroTarjeta = document.getElementById('numero-tarjeta').value;
+            var nombreTitular = document.getElementById('nombre-titular').value;
+            var codigoSeguridad = document.getElementById('codigo-seguridad').value;
+            var fechaVencimiento = document.getElementById('fecha-vencimiento').value;
+            var dniTitular = document.getElementById('dni-titular').value;
+
+            // Aquí puedes agregar validaciones o guardar la información
+
+            alert("Compra realizada con éxito utilizando la tarjeta " + tipoTarjeta);
+            document.getElementById('compra-entradas').style.display = 'none';
+            document.getElementById('compra-exitosa').style.display = 'block';
+            document.getElementById('detalle-compra').innerText = "Gracias por tu compra.";
+        }
+    </script>
+</body>
+</html>
