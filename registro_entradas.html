@@ -66,6 +66,7 @@
     <div class="container">
         <h1>UMAWAKA Conciertos</h1>
 
+
         <!-- Formulario de inicio de sesión -->
         <form id="login-form" style="display:block;">
             <h2>Iniciar Sesión</h2>
@@ -74,6 +75,7 @@
             <button type="submit" onclick="iniciarSesion(event)">Entrar</button>
             <p class="toggle-link" onclick="toggleForm('registro')">¿No tienes una cuenta? Regístrate</p>
         </form>
+
 
         <!-- Formulario de registro -->
         <form id="register-form" style="display:none;">
@@ -86,9 +88,11 @@
             <p class="toggle-link" onclick="toggleForm('login')">¿Ya tienes una cuenta? Inicia sesión</p>
         </form>
 
-        <!-- Sección de compra de entradas (oculta por defecto) -->
+
+        <!-- Sección de compra de entradas (oculta por defecto)-->
         <div id="compra-entradas" style="display:none;">
             <h2>Compra de Entradas para el Concierto de Chiku</h2>
+
 
             <div class="entrada">
                 <h3>BELGRANO alta</h3>
@@ -97,12 +101,14 @@
                 <input type="number" id="cantidad-belgrano-alta" name="cantidad-belgrano-alta" min="0" max="10" value="0">
             </div>
 
+
             <div class="entrada">
                 <h3>BELGRANO baja</h3>
                 <p>Precio: $40.000</p>
                 <label for="cantidad-belgrano-baja">Cantidad:</label>
                 <input type="number" id="cantidad-belgrano-baja" name="cantidad-belgrano-baja" min="0" max="10" value="0">
             </div>
+
 
             <div class="entrada">
                 <h3>SAN MARTIN alta</h3>
@@ -111,12 +117,14 @@
                 <input type="number" id="cantidad-san-martin-alta" name="cantidad-san-martin-alta" min="0" max="10" value="0">
             </div>
 
+
             <div class="entrada">
                 <h3>CAMPO 2</h3>
                 <p>Precio: $25.000</p>
                 <label for="cantidad-campo-2">Cantidad:</label>
                 <input type="number" id="cantidad-campo-2" name="cantidad-campo-2" min="0" max="10" value="0">
             </div>
+
 
             <div class="entrada">
                 <h3>CAMPO 1</h3>
@@ -125,12 +133,14 @@
                 <input type="number" id="cantidad-campo-1" name="cantidad-campo-1" min="0" max="10" value="0">
             </div>
 
+
             <div class="entrada">
                 <h3>SÍVORI alta</h3>
                 <p>Precio: $35.000</p>
                 <label for="cantidad-sivori-alta">Cantidad:</label>
                 <input type="number" id="cantidad-sivori-alta" name="cantidad-sivori-alta" min="0" max="10" value="0">
             </div>
+
 
             <div class="entrada">
                 <h3>SÍVORI baja</h3>
@@ -139,9 +149,11 @@
                 <input type="number" id="cantidad-sivori-baja" name="cantidad-sivori-baja" min="0" max="10" value="0">
             </div>
 
+
             <!-- Método de pago -->
             <div id="metodo-pago">
                 <h2>Detalles de la Tarjeta</h2>
+
 
                 <label for="tipo-tarjeta">Tipo de tarjeta</label>
                 <select id="tipo-tarjeta" required>
@@ -149,40 +161,60 @@
                     <option value="MasterCard">MasterCard</option>
                 </select>
 
+
                 <label for="numero-tarjeta">Número de tarjeta</label>
                 <input type="text" id="numero-tarjeta" placeholder="Número de tarjeta" required>
+
 
                 <label for="nombre-titular">Nombre del titular</label>
                 <input type="text" id="nombre-titular" placeholder="Nombre del titular" required>
 
+
                 <label for="codigo-seguridad">Código de seguridad (CVV)</label>
                 <input type="text" id="codigo-seguridad" placeholder="CVV" required>
 
+
                 <label for="fecha-vencimiento">Fecha de vencimiento</label>
                 <input type="month" id="fecha-vencimiento" required>
+
 
                 <label for="dni-titular">DNI del titular</label>
                 <input type="text" id="dni-titular" placeholder="DNI del titular" required>
             </div>
 
+
             <!-- Botón para realizar la compra -->
-            <button onclick="finalizarCompra()">Finalizar Compra</button>
+            <button type="button" onclick="finalizarCompra()">Finalizar Compra</button>
         </div>
+
 
         <!-- Mensaje de compra exitosa -->
         <div id="compra-exitosa">
             <h2>¡Compra exitosa!</h2>
             <p id="detalle-compra"></p>
+            <p id="codigo-entrada"></p> <!-- Aquí se mostrará el código de entrada -->
         </div>
     </div>
 
+
     <script>
         var isAuthenticated = false;
+        var comprasRealizadas = [];
 
-        // Función para alternar formularios de inicio y registro
+
+        // Función para guardar el usuario registrado en localStorage
+        function guardarUsuarioRegistrado(nombre, email, password, telefono) {
+            var usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+            usuariosRegistrados.push({ nombre, email, password, telefono });
+            localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
+        }
+
+
+        // Alterna entre el formulario de inicio de sesión y registro
         function toggleForm(formType) {
             const loginForm = document.getElementById('login-form');
             const registerForm = document.getElementById('register-form');
+
 
             if (formType === 'registro') {
                 loginForm.style.display = 'none';
@@ -193,22 +225,28 @@
             }
         }
 
+
         // Función para iniciar sesión
         function iniciarSesion(event) {
             event.preventDefault();
             var email = document.getElementById('login-email').value;
             var password = document.getElementById('login-password').value;
 
-            // Simulación de autenticación
-            if (email && password) {
+
+            var usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+            var usuarioEncontrado = usuariosRegistrados.find(usuario => usuario.email === email && usuario.password === password);
+
+
+            if (usuarioEncontrado) {
                 isAuthenticated = true;
                 alert("Inicio de sesión exitoso");
                 document.getElementById('login-form').style.display = 'none';
                 document.getElementById('compra-entradas').style.display = 'block';
             } else {
-                alert("Credenciales incorrectas");
+                alert("Credenciales incorrectas o usuario no registrado.");
             }
         }
+
 
         // Función para registrarse
         function registrarse(event) {
@@ -218,14 +256,44 @@
             var password = document.getElementById('register-password').value;
             var telefono = document.getElementById('register-telefono').value;
 
-            // Simulación de registro
-            if (nombre && email && password && telefono) {
-                alert("Registro exitoso");
-                toggleForm('login');
+
+            // Comprobar si el usuario ya existe
+            var usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+            var usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email);
+
+
+            if (usuarioExistente) {
+                alert("El usuario ya está registrado con este correo.");
             } else {
-                alert("Por favor, completa todos los campos");
+                guardarUsuarioRegistrado(nombre, email, password, telefono);
+                isAuthenticated = true;
+                alert("Registro exitoso. Ahora puedes iniciar sesión.");
+                limpiarCamposRegistro();
+                document.getElementById('register-form').style.display = 'none';
+                document.getElementById('login-form').style.display = 'block';
             }
         }
+
+
+        // Función para limpiar los campos del formulario de registro
+        function limpiarCamposRegistro() {
+            document.getElementById('register-nombre').value = '';
+            document.getElementById('register-email').value = '';
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-telefono').value = '';
+        }
+
+
+        // Generar un código de entrada aleatorio
+        function generarCodigoEntrada() {
+            var caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            var codigo = '';
+            for (var i = 0; i < 8; i++) {
+                codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return codigo;
+        }
+
 
         // Función para finalizar la compra
         function finalizarCompra() {
@@ -234,14 +302,24 @@
                 return;
             }
 
-            // Generar un código de entrada aleatorio
-            var codigoEntrada = Math.floor(100000 + Math.random() * 900000); // Código aleatorio de 6 dígitos
 
-            // Aquí puedes agregar validaciones o guardar la información
-            alert("Compra realizada con éxito.");
+            var tipoTarjeta = document.getElementById('tipo-tarjeta').value;
+            var numeroTarjeta = document.getElementById('numero-tarjeta').value;
+            var nombreTitular = document.getElementById('nombre-titular').value;
+            var codigoSeguridad = document.getElementById('codigo-seguridad').value;
+            var fechaVencimiento = document.getElementById('fecha-vencimiento').value;
+            var dniTitular = document.getElementById('dni-titular').value;
+
+
+            // Generar código de entrada
+            var codigoEntrada = generarCodigoEntrada();
+
+
+            alert("Compra realizada con éxito utilizando la tarjeta " + tipoTarjeta);
             document.getElementById('compra-entradas').style.display = 'none';
             document.getElementById('compra-exitosa').style.display = 'block';
-            document.getElementById('detalle-compra').innerText = "Gracias por tu compra. Tu Código de Entrada es: " + codigoEntrada;
+            document.getElementById('detalle-compra').innerText = "Gracias por tu compra.";
+            document.getElementById('codigo-entrada').innerText = "Tu código de entrada es: " + codigoEntrada;
         }
     </script>
 </body>
