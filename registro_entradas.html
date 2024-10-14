@@ -206,4 +206,43 @@
                 document.getElementById('login-form').style.display = 'none';
                 document.getElementById('compra-entradas').style.display = 'block';
             } else {
-                alert("Credenciales incorrectas
+                alert("Credenciales incorrectas");
+            }
+        }
+
+        // Función para registrarse
+        function registrarse(event) {
+            event.preventDefault();
+            var nombre = document.getElementById('register-nombre').value;
+            var email = document.getElementById('register-email').value;
+            var password = document.getElementById('register-password').value;
+            var telefono = document.getElementById('register-telefono').value;
+
+            // Simulación de registro
+            if (nombre && email && password && telefono) {
+                alert("Registro exitoso");
+                toggleForm('login');
+            } else {
+                alert("Por favor, completa todos los campos");
+            }
+        }
+
+        // Función para finalizar la compra
+        function finalizarCompra() {
+            if (!isAuthenticated) {
+                alert("Debes iniciar sesión primero");
+                return;
+            }
+
+            // Generar un código de entrada aleatorio
+            var codigoEntrada = Math.floor(100000 + Math.random() * 900000); // Código aleatorio de 6 dígitos
+
+            // Aquí puedes agregar validaciones o guardar la información
+            alert("Compra realizada con éxito.");
+            document.getElementById('compra-entradas').style.display = 'none';
+            document.getElementById('compra-exitosa').style.display = 'block';
+            document.getElementById('detalle-compra').innerText = "Gracias por tu compra. Tu Código de Entrada es: " + codigoEntrada;
+        }
+    </script>
+</body>
+</html>
