@@ -97,7 +97,6 @@
                 <input type="number" id="cantidad-belgrano-alta" name="cantidad-belgrano-alta" min="0" max="10" value="0">
             </div>
 
-
             <div class="entrada">
                 <h3>BELGRANO baja</h3>
                 <p>Precio: $40.000</p>
@@ -139,7 +138,6 @@
                 <label for="cantidad-sivori-baja">Cantidad:</label>
                 <input type="number" id="cantidad-sivori-baja" name="cantidad-sivori-baja" min="0" max="10" value="0">
             </div>
-
 
             <!-- Método de pago -->
             <div id="metodo-pago">
@@ -208,48 +206,4 @@
                 document.getElementById('login-form').style.display = 'none';
                 document.getElementById('compra-entradas').style.display = 'block';
             } else {
-                alert("Credenciales incorrectas");
-            }
-        }
-
-        // Función para registrarse
-        function registrarse(event) {
-            event.preventDefault();
-            var nombre = document.getElementById('register-nombre').value;
-            var email = document.getElementById('register-email').value;
-            var password = document.getElementById('register-password').value;
-            var telefono = document.getElementById('register-telefono').value;
-
-            // Simulación de registro
-            if (nombre && email && password && telefono) {
-                alert("Registro exitoso");
-                toggleForm('login');
-            } else {
-                alert("Por favor, completa todos los campos");
-            }
-        }
-
-        // Función para finalizar la compra
-        function finalizarCompra() {
-            if (!isAuthenticated) {
-                alert("Debes iniciar sesión primero");
-                return;
-            }
-
-            var tipoTarjeta = document.getElementById('tipo-tarjeta').value;
-            var numeroTarjeta = document.getElementById('numero-tarjeta').value;
-            var nombreTitular = document.getElementById('nombre-titular').value;
-            var codigoSeguridad = document.getElementById('codigo-seguridad').value;
-            var fechaVencimiento = document.getElementById('fecha-vencimiento').value;
-            var dniTitular = document.getElementById('dni-titular').value;
-
-            // Aquí puedes agregar validaciones o guardar la información
-
-            alert("Compra realizada con éxito utilizando la tarjeta " + tipoTarjeta);
-            document.getElementById('compra-entradas').style.display = 'none';
-            document.getElementById('compra-exitosa').style.display = 'block';
-            document.getElementById('detalle-compra').innerText = "Gracias por tu compra.";
-        }
-    </script>
-</body>
-</html>
+                alert("Credenciales incorrectas
